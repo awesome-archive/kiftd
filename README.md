@@ -10,8 +10,9 @@
 
 ## 快速导航
 * 访问kiftd官方主页来快速了解kiftd？ -- [kiftd官方主页](https://kohgylw.gitee.io/)
-* 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd -- [点击下载](https://gitee.com/kohgylw/kiftd/repository/archive/master.zip)
-* 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd -- [点击下载](https://github.com/KOHGYLW/kiftd/archive/master.zip)
+* 国内托管地址——腾讯开发者平台上的项目主页：https://dev.tencent.com/u/kohgylw/p/kiftd/git -- [点击下载](https://dev.tencent.com/u/kohgylw/p/kiftd/git/archive/master)
+* 国内托管地址——码云上的项目主页： https://gitee.com/kohgylw/kiftd -- [点击下载](https://gitee.com/kohgylw/kiftd/repository/archive/master.zip)
+* 国际托管地址——github上的项目主页： https://github.com/KOHGYLW/kiftd -- [点击下载](https://github.com/KOHGYLW/kiftd/archive/master.zip)
 
 ## 什么是kiftd?
 * ### 您还在使用U盘分享软件么？
@@ -32,9 +33,9 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 -------
 
 ## kiftd有哪些优势？
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——不足1MB的文档和超过5GB的高清电影资源？均能够随意上传和下载。
 
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...kiftd均一一具备，每一份kiftd均是“完全版”。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问级别控制、视频在线影院、Word/PPT/TXT/PDF文档在线预览、音乐在线欣赏、图片库在线预览...kiftd均一一具备，每一份kiftd均是“完全版”。
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
 
@@ -76,9 +77,26 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 
 > 提示：当您更新版本后，请手动清除浏览器的缓存，之后刷新网盘主页以确保数据文件保持最新！否则可能导致新版页面功能无法使用。
 
-### 常规更新v1.0.14
-_本次更新修复了一些已经发现的重要问题，推荐所有用户升级。_
-+ 修正了文件导出功能中，“覆盖”与“保留两者”的实际操作相反的问题。这一问题是由于编码时疏忽造成的，其可能会导致用户在导出时意外丢失文件，请及时更新修正。
+### 新版本v1.0.27
+_本次更新加入了很多备受用户期待的、实用性较强的新功能，进一步增强kiftd的使用体验。推荐所有用户升级体验。_
++ 最大下载速度限制功能现已加入！该功能可以保护您的网络带宽，防止因某一访问者将网络带宽全部占满导致其他访问者无法正常访问的情况发生。设置方法可参阅《kiftd说明文档》中的相关介绍。
++ 新增了主页“公告栏”功能——这一功能在之前被很多用户提出过，现已正式加入。该功能可以帮助您将一些重要的信息或提示显示给所有访问者，从而令管理更加便捷。
++ “自由注册新账户”功能可以为新账户设置默认的小组了。
++ “扩展存储区”的最大数量现已提高到255个，同时还改进了文件系统的扩展存储区存储机制，以便更好地应对大数量、大体积文件存储的需求。
++ 优化文件夹视图加载机制——当需要加载的文件列表数目较多时，系统将会分段加载这些数据从而提高页面的响应速度。
++ 允许您强制关闭服务器的IP地址XFF解析功能，从而避免访问者通过伪造XFF请求头的方式伪造自己的IP地址。
++ 允许您根据自身的实际需求和使用环境选择强制禁用服务器的“打包下载”功能。
++ 允许您根据自身的实际需求和使用环境选择强制禁用服务器的“在线解码”功能。
++ 允许您自行替换“在线解码”功能所使用的ffmpeg引擎文件——当kiftd未找到适合您操作系统的ffmpeg引擎时，您可以自行提供ffmpeg可执行文件，从而确保“在线解码”功能能够正常使用。
++ 为排序功能添加了等待动画效果。当排序量较大且耗时较长时，这能够为用户带来更好的使用体验。
++ 修复了图片预览功能无法正常播放大体积GIF图片的问题。
++ 修复了文件管理功能在导入本地文件夹时可能导致其无法被任何人访问的问题——现在，本地导入的文件夹将与父级文件夹的创建者相同，从而确保其父级文件夹的拥有者能够对新导入的文件夹进行访问及操作。
++ 优化了日志功能中的异常记录机制，增加了对异常堆栈信息的记录，以便开发者和维护人员能够通过日志信息获取到更加详细的异常信息。
++ 修复了“移动”操作在日志记录中“NEW PATH”（目标路径）项记录不正确的问题。
++ 修复了当文件或文件夹名称中含有特殊字符时可能会出现的一些显示问题。
++ 修复了程序主界面与一些Linux系统的图形界面不兼容的问题。
++ 进一步优化了文件系统，增强其稳定性和安全性。
++ 完善了《kiftd说明文档》，新增了关于“设置页面背景图片”和“备份文件系统数据”的相关介绍。
 
 > 需要查看更多版本历史信息？请访问： https://kohgylw.gitee.io/News.html 
 
@@ -121,4 +139,4 @@ _本次更新修复了一些已经发现的重要问题，推荐所有用户升�
 
 _作者会每隔1-3周浏览一次邮箱，如未能及时回复请耐心等待。回复或许会迟到，但它不会缺席。_
 
-2018-09-29 kohgylw@青阳龙野 作者保留版权
+2018-2020 kohgylw@青阳龙野 作者保留版权

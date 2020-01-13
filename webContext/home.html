@@ -1,12 +1,15 @@
 <!doctype html>
-<!-- kiftd 主页面 by 青阳龙野 -->
+<!-- 青阳网络文件传输系统 kiftd v1.0.27-RELEASE -->
+<!-- 欢迎访问主界面 -->
+<!-- by 青阳龙野（kohgylw@163.com） -->
 <html>
 <head>
 <base href="/">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>KIFT</title>
 <!-- Bootstrap基本框架 -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -37,8 +40,9 @@
 								class="graytext">KIFT</span>
 						</small>
 					</em>
-					</span> <span id="tb" class="rightbtn"></span>
-					<button class="btn btn-link rightbtn" onclick="refreshFolderView()">
+					</span> <span id="tb" class="rightbtn hidden-xs"></span>
+					<button class="btn btn-link rightbtn hidden-xs"
+						onclick="refreshFolderView()">
 						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -48,7 +52,7 @@
 		<!-- 信息栏、操作栏与文件列表 -->
 		<div class="row">
 			<div class="col-md-12">
-				<p id="vicetbbox" class="subtitle" style="display: none;">
+				<p class="subtitle visible-xs-block">
 					<span id="tb2"></span>
 					<button class="btn btn-link" onclick="refreshFolderView()">
 						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
@@ -80,13 +84,12 @@
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="parentFolderList"></ul></li>
 								</ul>
-								<form id="filetableoptmenusreach"
-									class="navbar-form navbar-left">
+								<form class="navbar-form navbar-left hidden-xs">
 									<div class="form-group">
 										<input id="sreachKeyWordIn" type="text" class="form-control"
 											placeholder="请输入文件名...">
 									</div>
-									<button type="button" class="btn btn-default"
+									<button id="searchbtn" type="button" class="btn btn-default"
 										onclick="doSearchFile()">搜索</button>
 								</form>
 								<ul class="nav navbar-nav navbar-right">
@@ -98,13 +101,16 @@
 											class="glyphicon glyphicon-cog"></span> 操作 <span
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="fileListDropDown">
-											<li id="createFolderButtonLi"><a>新建文件夹 <span
-													class="pull-right"><span
-														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
-											<li role="separator" class="divider"></li>
 											<li id="uploadFileButtonLi"><a>上传文件 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+U</span></a></li>
+											<li id="uploadFolderButtonLi"><a>上传文件夹 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+F</span></a></li>
+											<li role="separator" class="divider"></li>
+											<li id="createFolderButtonLi"><a>新建文件夹 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
 											<li role="separator" class="divider"></li>
 											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切
 														<span class="pull-right"><span
@@ -123,13 +129,14 @@
 							<tr>
 								<th onclick="sortbyfn()">文件名<span id="sortByFN"
 									aria-hidden="true" style="float: right"></span></th>
-								<th class="hiddenColumn" onclick="sortbycd()">创建日期<span
+								<th class="hidden-xs" onclick="sortbycd()">创建日期<span
 									id="sortByCD" aria-hidden="true" style="float: right"></span></th>
 								<th onclick="sortbyfs()">大小<span id="sortByFS"
 									aria-hidden="true" style="float: right"></span></th>
-								<th class="hiddenColumn" onclick="sortbycn()">创建者<span
+								<th class="hidden-xs" onclick="sortbycn()">创建者<span
 									id="sortByCN" aria-hidden="true" style="float: right"></span></th>
-								<th onclick="showOriginFolderView()">操作</th>
+								<th onclick="showOriginFolderView()">操作<span id="sortByOR"
+									aria-hidden="true" style="float: right"></span></th>
 							</tr>
 						</thead>
 						<tbody id="foldertable"></tbody>
@@ -172,6 +179,7 @@
 									placeholder="请输入密码……">
 							</div>
 						</div>
+						<div class="form-group hidden" id="vercodebox"></div>
 						<div id="alertbox" role="alert"></div>
 					</form>
 				</div>
@@ -320,7 +328,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="newfolderalert" role="alert"></div>
+						<div id="editfolderalert" role="alert"></div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -370,7 +378,7 @@
 							<div id="uploadstatus" class="uploadstatusbox"></div>
 						</div>
 					</div>
-					<div id="uploadFileAlert" role="alert"></div>
+					<div id="uploadFileAlert" role="alert" class="alert alert-danger"></div>
 					<div id="selectFileUpLoadModelAlert" class="alert alert-danger"
 						role="alert">
 						<h4>提示：存在同名文件！</h4>
@@ -382,7 +390,8 @@
 							全部应用
 						</p>
 						<p>
-							<button type="button" class="btn btn-danger btn-sm"
+							<button id="uploadcoverbtn" type="button"
+								class="btn btn-danger btn-sm"
 								onclick="selectFileUpLoadModelEnd('cover')">覆盖</button>
 							<button type="button" class="btn btn-default btn-sm"
 								onclick="selectFileUpLoadModelEnd('skip')">跳过</button>
@@ -401,6 +410,83 @@
 		</div>
 	</div>
 	<!-- end 上传文件 -->
+	<!-- 上传文件夹框 -->
+	<div class="modal fade" id="importFolderModal" tabindex="-1"
+		role="dialog" aria-labelledby="importFolderMolderTitle">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="importFolderMolderTitle">
+						<span class="glyphicon glyphicon-cloud-upload"></span> 上传文件夹
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5>选择文件夹：</h5>
+					<div class="input-group">
+						<input type="text" id="folderpath" class="form-control"
+							onclick="checkimportpath()" onfocus="this.blur()"
+							placeholder="请点击选择要上传的文件夹……" folderConstraintLevel="0">
+						<div class="input-group-btn">
+							<button id="importFolderLevelBtn" type="button"
+								class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								&nbsp;<span id="importfoldertype">公开的</span>&nbsp;<span
+									class="caret"></span>
+							</button>
+							<ul id="importfoldertypelist"
+								class="dropdown-menu dropdown-menu-right">
+							</ul>
+						</div>
+					</div>
+					<input type="file" id="importfolder" style="display: none;"
+						onchange="getInputImport()" multiple="multiple" webkitdirectory>
+					<h5>
+						上传进度：<span id="importcount"></span>
+					</h5>
+					<div class="progress">
+						<div id="importpros" class="progress-bar" role="progressbar"
+							aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+							style="width: 0%;">
+							<span class="sr-only"></span>
+						</div>
+					</div>
+					<h5>上传状态：</h5>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="importstatus" class="uploadstatusbox"></div>
+						</div>
+					</div>
+					<div id="importFolderAlert" class="alert alert-danger" role="alert"></div>
+					<div id="selectFolderImportModelAlert" class="alert alert-danger"
+						role="alert">
+						<h4>提示：存在同名文件夹！</h4>
+						<p>
+							您要上传的文件夹“<span id="repeFolderName"></span>”已存在于该路径下，您希望：
+						</p>
+						<p>
+							<button id="importcoverbtn" type="button"
+								class="btn btn-danger btn-sm" onclick="importAndCover()">覆盖</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="abortImport()">取消上传</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="importAndBoth()">保留两者</button>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						onclick='abortImport()'>取消</button>
+					<button id="importbutton" type='button' class='btn btn-primary'
+						onclick='checkImportFolder()'>开始上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 上传文件夹 -->
 	<!-- 下载提示框 -->
 	<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog"
 		aria-labelledby="downloadModelTitle">
@@ -446,7 +532,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<h5 id="deleteFileMessage"></h5>
+					<h5 id="deleteFileMessage" class="wordbreak"></h5>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -591,7 +677,8 @@
 							全部应用
 						</p>
 						<p>
-							<button type="button" class="btn btn-danger btn-sm"
+							<button id="movecoverbtn" type="button"
+								class="btn btn-danger btn-sm"
 								onclick="selectFileMoveModel('cover')">覆盖</button>
 							<button type="button" class="btn btn-default btn-sm"
 								onclick="selectFileMoveModel('skip')">跳过</button>
@@ -630,6 +717,8 @@
 						<dd id="fim_folderCreationDate"></dd>
 						<dt>文件统计：</dt>
 						<dd id="fim_statistics"></dd>
+						<dt>文件夹ID：</dt>
+						<dd id="fim_folderId"></dd>
 					</dl>
 				</div>
 				<div class="modal-footer">
@@ -639,6 +728,133 @@
 		</div>
 	</div>
 	<!-- end 文件夹详情模态框 -->
+	<!-- 修改密码模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="changePasswordModal"
+		tabindex="-1" role="dialog" aria-labelledby="changePasswordModelTitle">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="changePasswordModelTitle">
+						<span class="glyphicon glyphicon-edit"></span> 修改密码
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="changepassword_oldepwdbox">
+							<label for="changepassword_oldpwd"
+								id="changepassword_oldpwdtitle" class="col-sm-3 control-label">旧密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_oldpwd" placeholder="请输入旧密码确认身份……">
+							</div>
+						</div>
+						<div class="form-group" id="changepassword_newpwdbox">
+							<label for="changepassword_newpwd"
+								id="changepassword_newpwdtitle" class="col-sm-3 control-label">新密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_newpwd" placeholder="请输入新密码……">
+							</div>
+						</div>
+						<div class="form-group" id="changepassword_reqnewpwdbox">
+							<label for="changepassword_reqnewpwd"
+								id="changepassword_reqnewpwdtitle"
+								class="col-sm-3 control-label">确认新密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_reqnewpwd" placeholder="请再次输入新密码……">
+							</div>
+						</div>
+						<div id="changepassword_vccodebox" class="form-group"></div>
+						<div id="changepasswordalertbox" class="alert alert-danger"
+							role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" id="changePasswordButton"
+						class="btn btn-danger" onclick="doChangePassword()">立即修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 改密 -->
+	<!-- 永久资源链接显示模态框 -->
+	<div class="modal fade" id="fileChainModal" tabindex="-1" role="dialog"
+		aria-labelledby="chainModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="chainModalLabel">
+						<span class="glyphicon glyphicon-link"></span> 资源链接
+					</h4>
+				</div>
+				<div class="modal-body">
+					<textarea id="fileChainTextarea" class="form-control" rows="3"
+						readonly></textarea>
+				</div>
+				<div class="modal-footer">
+					<button id="copyChainBtn" type="button" class="btn btn-info"
+						onclick="copyFileChain()">复制链接</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 永久资源链接 -->
+	<!-- 公告信息栏 -->
+	<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog"
+		aria-labelledby="noticeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="noticeModalLabel">公告信息</h4>
+				</div>
+				<div class="modal-body" style="overflow: scroll;"
+					id="noticeModalBody"></div>
+				<div class="modal-footer">
+					<label class="text-muted"> <input type="checkbox"
+						id="dontShowSomeNoticeAt30Day"> 30天内不再显示相同的公告信息
+					</label>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 公告信息栏 -->
+	<!-- 显示公告按钮 -->
+	<div id="shownoticebox" class="shownoticebox text-center hidden">
+		<button type="button" onclick="showNotice()" class="shownoticebutton">
+			<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><br />公<br />告
+		</button>
+	</div>
+	<!-- end 显示公告按钮 -->
+	<!-- 返回顶部按钮（隐藏式） -->
+	<div id="gobacktotopbox" class="gobacktopbox text-center hidden">
+		<button type="button" onclick="goBackToTop()" class="gobacktopbutton">
+			返回顶部 <span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
+		</button>
+	</div>
+	<!-- end 返回顶部按钮 -->
+	<!-- 加载余下部分的提示 -->
+	<div id="loadingremaininngbox"
+		class="loadingremaininngbox text-center bg-info hidden">
+		正在加载文件列表：<span id="loadingrate">0%</span>... <span
+			class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+	</div>
+	<!-- end 加载余下部分的提示 -->
 </body>
 <!-- jquery基本框架 -->
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
